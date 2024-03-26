@@ -9,13 +9,13 @@ jobs:
   build_multi_platform_images:
     name: Build and push Docker image to Docker Hub
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        include:
-          - name: "arm64"
-            path: arm64v8/nginx:alpine
-          - name: "amd64"
-            path: nginx:alpine
+    # strategy:
+    #   matrix:
+    #     include:
+    #       - name: "arm64"
+    #         path: arm64v8/nginx:alpine
+    #       - name: "amd64"
+    #         path: nginx:alpine
     steps:
       - name: Get tag
         id: tag
@@ -92,9 +92,9 @@ jobs:
       #     docker manifest push -p ${{ github.repository }}:latest
           
       - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v2
+        uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.CI_BOT_TOKEN }}
+          token: ${{ secrets.TEMP_TOKEN }}
           repository: kubeshop/testkube-dashboard-chart
           event-type: trigger-workflow-dashboard-chart
-          client-payload: '{"app_version": "${{ steps.tag.outputs.tag  }}"}'
+          client-payload: '{"app_version": "${{ steps.tag.outputs.tag }}"}'
